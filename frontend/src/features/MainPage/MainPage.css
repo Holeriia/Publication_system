@@ -1,0 +1,30 @@
+.main-page {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.employee-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.employee-list li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.btn-create {
+  background-color: #1abc9c;
+  border: none;
+  padding: 0.7rem 1.3rem;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-create:hover {
+  background-color: #16a085;
+}

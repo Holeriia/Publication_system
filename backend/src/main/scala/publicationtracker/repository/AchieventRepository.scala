@@ -1,0 +1,22 @@
+package publicationtracker.repository
+
+import cats.Id
+import publicationtracker.model.Achievements.AchieventF
+import fs2.Stream
+
+import java.util.UUID
+
+trait AchieventRepository[F[_]] {
+
+  def getAll: F[List[AchieventF[Id]]]
+
+  def getById(id: UUID): F[Option[AchieventF[Id]]]
+
+  def insert(achievent: AchieventF[Id]): F[Unit]
+
+  def update(achievent: AchieventF[Id]): F[Unit]
+
+  def delete(id: UUID): F[Boolean]
+
+  def streamAll: Stream[F, AchieventF[Id]]
+}
