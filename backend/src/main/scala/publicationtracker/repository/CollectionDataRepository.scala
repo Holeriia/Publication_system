@@ -1,7 +1,8 @@
 package publicationtracker.repository
 
-import publicationtracker.model.ConferencesAndPublications.{CollectionData, CollectionDataF}
 import fs2.Stream
+import publicationtracker.model.ConferencesAndPublications.{CollectionData, CollectionDataF}
+
 import java.util.UUID
 
 trait CollectionDataRepository[F[_]] {

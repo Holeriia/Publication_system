@@ -5,10 +5,11 @@ import cats.syntax.all.*
 import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
+import fs2.Stream
 import publicationtracker.model.Achievements.MethodicalActivity
 import publicationtracker.model.db.DbMethodicalActivity
 import publicationtracker.repository.MethodicalActivityRepository
-import fs2.Stream
+
 import java.util.UUID
 
 class MethodicalActivityRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends MethodicalActivityRepository[F] {

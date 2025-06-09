@@ -3,6 +3,7 @@ package publicationtracker.model
 import cats.Id
 import publicationtracker.tagless.{FunctionK, FunctorK}
 
+import java.time.LocalDate
 import java.util.UUID
 
 object CoreEntities {
@@ -21,11 +22,12 @@ object CoreEntities {
                               firstName: F[String],
                               lastName: F[String],
                               patronymic: F[Option[String]],
-                              degreeId: F[UUID],
-                              titleId: F[UUID],
-                              postId: F[UUID],
-                              exp: F[Option[Int]],
-                              seniority: F[Option[Int]],
+                              degreeId: F[Option[UUID]],
+                              titleId: F[Option[UUID]],
+                              postId: F[Option[UUID]],
+                              universityStartDate: F[Option[LocalDate]],
+                              industryStartDate: F[Option[LocalDate]],
+                              experienceComment: F[Option[String]],
                               diplomaEducation: F[Option[String]]
                             )
   type Employee = EmployeeF[Id]
@@ -64,8 +66,9 @@ object CoreEntities {
         fk(emp.degreeId),
         fk(emp.titleId),
         fk(emp.postId),
-        fk(emp.exp),
-        fk(emp.seniority),
+        fk(emp.universityStartDate),
+        fk(emp.industryStartDate),
+        fk(emp.experienceComment),
         fk(emp.diplomaEducation)
       )
   }

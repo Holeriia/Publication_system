@@ -1,16 +1,18 @@
 package publicationtracker.repository
 
 import cats.Id
-import publicationtracker.model.Achievements.AchievementAuthorF
+import cats.data.NonEmptyList
 import fs2.Stream
+import publicationtracker.model.Achievements.{AchievementAuthor, AchievementAuthorF}
 
 import java.util.UUID
 
 trait AchievementAuthorRepository[F[_]] {
-  def getAll: F[List[AchievementAuthorF[Id]]]
-  def getById(id: UUID): F[Option[AchievementAuthorF[Id]]]
-  def insert(entity: AchievementAuthorF[Id]): F[Unit]
-  def update(entity: AchievementAuthorF[Id]): F[Unit]
+  def getAll: F[List[AchievementAuthor]]
+  def getById(id: UUID): F[Option[AchievementAuthor]]
+  def insert(entity: AchievementAuthor): F[Unit]
+  def update(entity: AchievementAuthor): F[Unit]
   def delete(id: UUID): F[Boolean]
-  def streamAll: Stream[F, AchievementAuthorF[Id]]
+  def streamAll: Stream[F, AchievementAuthor]
+  def getByAuthorIds(authorIds: NonEmptyList[UUID]): F[List[AchievementAuthor]]
 }

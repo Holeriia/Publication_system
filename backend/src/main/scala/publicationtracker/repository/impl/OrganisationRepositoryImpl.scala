@@ -6,10 +6,11 @@ import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
 import doobie.util.{Get, Put, Read, Write}
+import fs2.Stream
 import publicationtracker.model.CoreEntities.Organisation
 import publicationtracker.model.db.DbOrganisation
 import publicationtracker.repository.OrganisationRepository
-import fs2.Stream
+
 import java.util.UUID
 
 class OrganisationRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends OrganisationRepository[F] {
@@ -65,9 +66,9 @@ class OrganisationRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends Organis
       .map(_ > 0)
 
   override def streamAll: Stream[F, Organisation] =
-    (fr"SELECT id, organisation_type_id, city_id, name FROM" ++ Fragment.const(tableName))
+    (fr"SELECT id, full_name, short_name, type_id, city_id FROM " ++ Fragment.const(tableName))
       .query[DbOrganisation]
       .stream
       .transact(xa)
-      .map(DbOrganisation.toCore)  
+      .map(DbOrganisation.toCore)
 }

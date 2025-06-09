@@ -1,9 +1,9 @@
 package publicationtracker.model.db
 
 import cats.Id
+import publicationtracker.model.ConferencesAndPublications.{PublicationData, PublicationDataF}
 
 import java.util.UUID
-import publicationtracker.model.ConferencesAndPublications.{PublicationData, PublicationDataF}
 
 case class DbPublicationData(
                               id: UUID,

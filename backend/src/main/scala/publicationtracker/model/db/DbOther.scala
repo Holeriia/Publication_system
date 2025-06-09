@@ -1,7 +1,8 @@
 package publicationtracker.model.db
 
-import publicationtracker.model.Achievements.OtherF
 import cats.Id
+import publicationtracker.model.Achievements.OtherF
+
 import java.util.UUID
 
 case class DbOther(

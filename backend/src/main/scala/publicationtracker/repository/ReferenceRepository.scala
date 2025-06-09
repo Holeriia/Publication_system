@@ -3,6 +3,7 @@ package publicationtracker.repository
 import cats.Id
 import cats.data.NonEmptyList
 import publicationtracker.model.ReferenceData.ReferenceF
+
 import java.util.UUID
 
 trait ReferenceRepository[F[_]] {
@@ -11,4 +12,5 @@ trait ReferenceRepository[F[_]] {
   def insert(entity: ReferenceF[Id]): F[Unit]
   def insertMany(entities: NonEmptyList[ReferenceF[Id]]): F[Unit]
   def delete(id: UUID): F[Boolean]
+  def findByName(name: String): F[Option[ReferenceF[Id]]]
 }

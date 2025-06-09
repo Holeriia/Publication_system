@@ -11,6 +11,12 @@ object Achievements {
   case class AchieventF[F[_]](
                                id: F[UUID],
                                typeId: F[UUID],
+                               publicationId: F[Option[UUID]],
+                               otherId: F[Option[UUID]],
+                               methodicalActivityId: F[Option[UUID]],
+                               professionalDevelopmentId: F[Option[UUID]],
+                               pattentsAndRegistrationId: F[Option[UUID]],
+                               comment: F[Option[String]],
                                rewardFile: F[Option[String]],
                                date: F[Option[LocalDate]]
                              )
@@ -18,13 +24,8 @@ object Achievements {
 
   case class AchievementAuthorF[F[_]](
                                        id: F[UUID],
-                                       achieventId: F[UUID],             // Внешний ключ на ачивку
+                                       achieventId: F[UUID],
                                        authorId: F[UUID],
-                                       publicationId: F[Option[UUID]],
-                                       otherId: F[Option[UUID]],
-                                       methodicalActivityId: F[Option[UUID]],
-                                       professionalDevelopmentId: F[Option[UUID]],
-                                       pattentsAndRegistrationId: F[Option[UUID]],
                                        authorOrder: F[Option[Int]]
                                      )
   type AchievementAuthor = AchievementAuthorF[Id]
@@ -66,10 +67,18 @@ object Achievements {
 
   // FunctorK для AchieventF
   implicit val achieventFunctorK: FunctorK[AchieventF] = new FunctorK[AchieventF] {
-    def mapK[G[_], H[_]](fa: AchieventF[G])(fk: FunctionK[G, H]): AchieventF[H] =
+    override def mapK[G[_], H[_]](fa: AchieventF[G])(fk: FunctionK[G, H]): AchieventF[H] =
       AchieventF(
         fk(fa.id),
         fk(fa.typeId),
+
+        fk(fa.publicationId),
+        fk(fa.otherId),
+        fk(fa.methodicalActivityId),
+        fk(fa.professionalDevelopmentId),
+        fk(fa.pattentsAndRegistrationId),
+
+        fk(fa.comment),
         fk(fa.rewardFile),
         fk(fa.date)
       )
@@ -77,16 +86,11 @@ object Achievements {
 
   // FunctorK для AchievementAuthorF
   implicit val achievementAuthorFunctorK: FunctorK[AchievementAuthorF] = new FunctorK[AchievementAuthorF] {
-    def mapK[G[_], H[_]](fa: AchievementAuthorF[G])(fk: FunctionK[G, H]): AchievementAuthorF[H] =
+    override def mapK[G[_], H[_]](fa: AchievementAuthorF[G])(fk: FunctionK[G, H]): AchievementAuthorF[H] =
       AchievementAuthorF(
         fk(fa.id),
         fk(fa.achieventId),
         fk(fa.authorId),
-        fk(fa.publicationId),
-        fk(fa.otherId),
-        fk(fa.methodicalActivityId),
-        fk(fa.professionalDevelopmentId),
-        fk(fa.pattentsAndRegistrationId),
         fk(fa.authorOrder)
       )
   }

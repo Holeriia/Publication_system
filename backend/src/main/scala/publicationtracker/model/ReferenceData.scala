@@ -21,6 +21,7 @@ object ReferenceData {
   type PublicationLevelF[F[_]] = Reference[F]
   type PublicationTypeF[F[_]] = Reference[F]
   type ConferenceDataStatusF[F[_]] = Reference[F]
+  type ParticipationFormatF[F[_]] = Reference[F]
 
   // FunctorK для Reference — позволяет применять FunctionK к полям id и name
   implicit val referenceFunctorK: FunctorK[Reference] = new FunctorK[Reference] {

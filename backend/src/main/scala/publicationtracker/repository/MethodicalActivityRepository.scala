@@ -1,7 +1,8 @@
 package publicationtracker.repository
 
-import publicationtracker.model.Achievements.MethodicalActivity
 import fs2.Stream
+import publicationtracker.model.Achievements.MethodicalActivity
+
 import java.util.UUID
 
 trait MethodicalActivityRepository[F[_]] {

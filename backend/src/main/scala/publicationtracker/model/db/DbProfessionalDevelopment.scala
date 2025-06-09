@@ -1,7 +1,7 @@
 package publicationtracker.model.db
 
-import publicationtracker.model.Achievements.*
 import cats.Id
+import publicationtracker.model.Achievements.*
 
 import java.time.LocalDate
 import java.util.UUID

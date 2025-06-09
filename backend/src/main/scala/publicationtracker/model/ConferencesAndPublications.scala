@@ -8,13 +8,15 @@ import java.util.UUID
 
 object ConferencesAndPublications {
 
+  //TODO: добавить город в конференцию
   case class ConferenceF[F[_]](
                                 id: F[UUID],
                                 name: F[String],
                                 levelId: F[UUID],
                                 organisationId: F[UUID],
                                 date: F[Option[LocalDate]],
-                                regulationFile: F[Option[String]]
+                                regulationFile: F[Option[String]],
+                                participantsCount: F[Option[Int]]
                               )
   type Conference = ConferenceF[Id]
 
@@ -43,7 +45,8 @@ object ConferencesAndPublications {
                                     id: F[UUID],
                                     conferenceId: F[UUID],
                                     collectionId: F[UUID],
-                                    statusId: F[UUID]
+                                    statusId: F[UUID],
+                                    participationFormatId: F[UUID]
                                   )
   type ConferenceData = ConferenceDataF[Id]
 
@@ -64,9 +67,11 @@ object ConferencesAndPublications {
         fk(fa.levelId),
         fk(fa.organisationId),
         fk(fa.date),
-        fk(fa.regulationFile)
+        fk(fa.regulationFile),
+        fk(fa.participantsCount)
       )
   }
+
 
   implicit val collectionDataFunctorK: FunctorK[CollectionDataF] = new FunctorK[CollectionDataF] {
     def mapK[G[_], H[_]](fa: CollectionDataF[G])(fk: FunctionK[G, H]): CollectionDataF[H] =
@@ -99,7 +104,8 @@ object ConferencesAndPublications {
         fk(fa.id),
         fk(fa.conferenceId),
         fk(fa.collectionId),
-        fk(fa.statusId)
+        fk(fa.statusId),
+        fk(fa.participationFormatId) // <-- добавлено
       )
   }
 

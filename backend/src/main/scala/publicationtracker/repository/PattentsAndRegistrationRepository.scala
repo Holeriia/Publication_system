@@ -1,9 +1,10 @@
 package publicationtracker.repository
 
-import publicationtracker.model.Achievements.*
 import cats.Id
-import java.util.UUID
 import fs2.Stream
+import publicationtracker.model.Achievements.*
+
+import java.util.UUID
 
 trait PattentsAndRegistrationRepository[F[_]] {
   def getAll: F[List[PattentsAndRegistrationF[Id]]]

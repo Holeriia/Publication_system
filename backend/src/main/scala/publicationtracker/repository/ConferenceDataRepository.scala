@@ -2,10 +2,10 @@ package publicationtracker.repository
 
 import cats.Id
 import cats.effect.Async
+import fs2.Stream
 import publicationtracker.model.ConferencesAndPublications.ConferenceDataF
 
 import java.util.UUID
-import fs2.Stream
 
 trait ConferenceDataRepository[F[_]] {
   def getAll: F[List[ConferenceDataF[cats.Id]]]

@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 
 interface EmployeeLinkProps {
@@ -6,5 +7,8 @@ interface EmployeeLinkProps {
 }
 
 export const EmployeeLink: React.FC<EmployeeLinkProps> = ({ id, fullName }) => {
-  return <Link to={`/employees/${id}`}>{fullName}</Link>;
+  const url = `/employees/${id}/full`;
+  console.log("Link to:", url);
+  return <Link to={url}>{fullName}</Link>;
 };
+

@@ -1,7 +1,7 @@
 package publicationtracker.model.db
 
-import publicationtracker.model.ConferencesAndPublications.ConferenceF
 import cats.Id
+import publicationtracker.model.ConferencesAndPublications.ConferenceF
 
 import java.time.LocalDate
 import java.util.UUID
@@ -12,7 +12,8 @@ case class DbConference(
                          levelId: UUID,
                          organisationId: UUID,
                          date: Option[LocalDate],
-                         regulationFile: Option[String]
+                         regulationFile: Option[String],
+                         participantsCount: Option[Int] // новое поле
                        )
 
 object DbConference {
@@ -23,7 +24,8 @@ object DbConference {
       c.levelId,
       c.organisationId,
       c.date,
-      c.regulationFile
+      c.regulationFile,
+      c.participantsCount // добавлено
     )
 
   def toCore(db: DbConference): ConferenceF[Id] =
@@ -33,6 +35,8 @@ object DbConference {
       levelId = db.levelId,
       organisationId = db.organisationId,
       date = db.date,
-      regulationFile = db.regulationFile
+      regulationFile = db.regulationFile,
+      participantsCount = db.participantsCount // добавлено
     )
 }
+

@@ -1,9 +1,9 @@
 package publicationtracker.repository
 
+import fs2.Stream
 import publicationtracker.model.CoreEntities.Author
 
 import java.util.UUID
-import fs2.Stream
 
 trait AuthorRepository[F[_]] {
   def getAll: F[List[Author]]
@@ -12,4 +12,6 @@ trait AuthorRepository[F[_]] {
   def update(author: Author): F[Unit]
   def delete(id: UUID): F[Boolean]
   def streamAll: Stream[F, Author]
+  def getByEmployeeId(employeeId: UUID): F[List[Author]]
+  def getByIds(ids: List[UUID]): F[List[Author]]
 }
