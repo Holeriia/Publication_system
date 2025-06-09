@@ -7,11 +7,14 @@ import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
 import doobie.util.{Get, Put, Read, Write}
+import fs2.Stream
 import publicationtracker.model.Achievements.OtherF
 import publicationtracker.model.db.{Conversions, DbOther}
 import publicationtracker.repository.OtherRepository
-import fs2.Stream
+
 import java.util.UUID
+import cats.data.NonEmptyList
+import cats.syntax.all.*
 
 class OtherRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends OtherRepository[F] {
 
@@ -71,4 +74,15 @@ class OtherRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends OtherRepositor
       .transact(xa)
       .map(DbOther.toCore)
 
+  def getByIds(ids: List[UUID]): F[List[OtherF[Id]]] =
+    ids match {
+      case Nil => Async[F].pure(Nil)
+      case nonEmptyIds =>
+        val nel = NonEmptyList.fromListUnsafe(nonEmptyIds)
+        val query = fr"SELECT id, name, description, file_path FROM other WHERE " ++ Fragments.in(fr"id", nel)
+        query.query[DbOther]
+          .to[List]
+          .transact(xa)
+          .map(_.map(DbOther.toCore))
+    }
 }

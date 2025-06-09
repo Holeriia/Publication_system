@@ -1,7 +1,7 @@
 package publicationtracker.model.db
 
-import publicationtracker.model.ConferencesAndPublications.CollectionDataF
 import cats.Id
+import publicationtracker.model.ConferencesAndPublications.CollectionDataF
 
 import java.util.UUID
 

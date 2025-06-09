@@ -1,16 +1,16 @@
 package publicationtracker.repository.impl
 
+import cats.Id
 import cats.effect.Async
 import cats.syntax.all.*
 import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
 import doobie.util.{Read, Write}
+import fs2.Stream
 import publicationtracker.model.ConferencesAndPublications.{CollectionData, CollectionDataF}
 import publicationtracker.model.db.DbCollectionData
 import publicationtracker.repository.CollectionDataRepository
-import cats.Id
-import fs2.Stream
 
 import java.util.UUID
 

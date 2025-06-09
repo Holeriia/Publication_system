@@ -1,9 +1,8 @@
 package publicationtracker.repository
 
-import publicationtracker.model.CoreEntities.Employee
-
-import java.util.UUID
 import fs2.Stream
+import publicationtracker.model.CoreEntities.Employee
+import java.util.UUID
 
 trait EmployeeRepository[F[_]] {
   def getAll: F[List[Employee]]

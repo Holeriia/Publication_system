@@ -1,10 +1,9 @@
 package publicationtracker.repository
 
-import cats.effect.Async
+import fs2.Stream
 import publicationtracker.model.CoreEntities.Organisation
 
 import java.util.UUID
-import fs2.Stream
 
 trait OrganisationRepository[F[_]] {
   def getAll: F[List[Organisation]]

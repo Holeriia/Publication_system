@@ -6,27 +6,21 @@ import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
 import doobie.util.{Get, Put, Read, Write}
+import fs2.Stream
 import publicationtracker.model.CoreEntities.Author
 import publicationtracker.model.db.DbAuthor
 import publicationtracker.repository.AuthorRepository
-import fs2.Stream
+import cats.data.NonEmptyList
+import cats.effect.Async
+import doobie.*
+import doobie.implicits.*
+import doobie.postgres.implicits.*
+import cats.syntax.all.*
 import java.util.UUID
 
 class AuthorRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AuthorRepository[F] {
 
   private val tableName = "author"
-
-  implicit val getDbAuthor: Read[DbAuthor] =
-    Read[(UUID, String, String, Option[String], Boolean, Option[UUID], Option[String])].map {
-      case (id, firstName, lastName, patronymic, isEmployee, employeeId, affiliation) =>
-        DbAuthor(id, firstName, lastName, patronymic, isEmployee, employeeId, affiliation)
-    }
-
-  implicit val putDbAuthor: Write[DbAuthor] =
-    Write[(UUID, String, String, Option[String], Boolean, Option[UUID], Option[String])].contramap {
-      case DbAuthor(id, firstName, lastName, patronymic, isEmployee, employeeId, affiliation) =>
-        (id, firstName, lastName, patronymic, isEmployee, employeeId, affiliation)
-    }
 
   override def getAll: F[List[Author]] =
     (fr"SELECT id, first_name, last_name, patronymic, is_employee, employee_id, affiliation FROM " ++ Fragment.const(tableName))
@@ -54,7 +48,8 @@ class AuthorRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AuthorReposit
 
   override def update(author: Author): F[Unit] = {
     val db = DbAuthor.fromCore(author)
-    (fr"UPDATE " ++ Fragment.const(tableName) ++ fr"""
+    (fr"UPDATE " ++ Fragment.const(tableName) ++
+      fr"""
       SET first_name = ${db.firstName},
           last_name = ${db.lastName},
           patronymic = ${db.patronymic},
@@ -71,9 +66,28 @@ class AuthorRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AuthorReposit
       .map(_ > 0)
 
   override def streamAll: Stream[F, Author] =
-    (fr"SELECT id, surname, name, patronymic FROM" ++ Fragment.const(tableName))
+    (fr"SELECT id, first_name, last_name, patronymic, is_employee, employee_id, affiliation FROM " ++ Fragment.const(tableName))
       .query[DbAuthor]
       .stream
       .transact(xa)
       .map(DbAuthor.toCore)
+
+  override def getByEmployeeId(employeeId: UUID): F[List[Author]] =
+    sql"""SELECT * FROM author WHERE employee_id = $employeeId"""
+      .query[Author]
+      .to[List]
+      .transact(xa)
+
+  override def getByIds(ids: List[UUID]): F[List[Author]] =
+    ids match {
+      case Nil => Async[F].pure(Nil)
+      case nonEmptyIds =>
+        val nel = NonEmptyList.fromListUnsafe(nonEmptyIds)
+        val query = fr"SELECT id, full_name, employee_id FROM " ++ Fragment.const(tableName) ++ Fragments.in(fr"id", nel)
+
+        query.query[DbAuthor]
+          .to[List]
+          .transact(xa)
+          .map(_.map(DbAuthor.toCore))
+    }  
 }

@@ -6,10 +6,10 @@ import cats.syntax.all.*
 import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
+import fs2.Stream
 import publicationtracker.model.ConferencesAndPublications.PublicationDataF
 import publicationtracker.model.db.DbPublicationData
 import publicationtracker.repository.PublicationDataRepository
-import fs2.Stream
 
 import java.util.UUID
 

@@ -2,8 +2,9 @@ package publicationtracker.repository
 
 import cats.Id
 import cats.effect.Async
-import publicationtracker.model.ConferencesAndPublications.PublicationF
 import fs2.Stream
+import publicationtracker.model.ConferencesAndPublications.PublicationF
+
 import java.util.UUID
 
 trait PublicationRepository[F[_]] {

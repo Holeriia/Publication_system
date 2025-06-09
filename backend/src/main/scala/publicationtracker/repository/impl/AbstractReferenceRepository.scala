@@ -5,13 +5,12 @@ import cats.data.NonEmptyList
 import cats.effect.MonadCancelThrow
 import cats.syntax.all.*
 import doobie.*
-import doobie.implicits.*
 import doobie.postgres.implicits.*
 import doobie.util.{Get, Put, Read, Write}
 import publicationtracker.model.ReferenceData.ReferenceF
-import publicationtracker.model.db.Conversions.*
 import publicationtracker.model.db.{Conversions, DbReference}
 import publicationtracker.repository.ReferenceRepository
+
 import java.util.UUID
 
 abstract class AbstractReferenceRepository[F[_]: MonadCancelThrow](tableName: String)(xa: Transactor[F])
@@ -63,4 +62,12 @@ abstract class AbstractReferenceRepository[F[_]: MonadCancelThrow](tableName: St
       .run
       .transact(xa)
       .map(_ > 0)
+
+  override def findByName(name: String): F[Option[ReferenceF[Id]]] = {
+    (fr"SELECT id, name FROM " ++ Fragment.const(tableName) ++ fr" WHERE name = $name")
+      .query[DbReference]
+      .option
+      .transact(xa)
+      .map(_.map(Conversions.fromCore))
+  }
 }

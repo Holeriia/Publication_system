@@ -6,12 +6,13 @@ import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
 import doobie.util.{Get, Put, Read, Write}
+import fs2.Stream
 import publicationtracker.model.Achievements.ProfessionalDevelopment
 import publicationtracker.model.db.DbProfessionalDevelopment
 import publicationtracker.repository.ProfessionalDevelopmentRepository
-import fs2.Stream
-import java.util.UUID
+
 import java.time.LocalDate
+import java.util.UUID
 
 class ProfessionalDevelopmentRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends ProfessionalDevelopmentRepository[F] {
 

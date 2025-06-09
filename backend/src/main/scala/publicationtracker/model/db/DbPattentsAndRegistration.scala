@@ -1,9 +1,10 @@
 package publicationtracker.model.db
 
-import publicationtracker.model.Achievements.*
 import cats.Id
-import java.util.UUID
+import publicationtracker.model.Achievements.*
+
 import java.time.LocalDate
+import java.util.UUID
 
 case class DbPattentsAndRegistration(
                                       id: UUID,

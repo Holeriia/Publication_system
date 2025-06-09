@@ -1,8 +1,9 @@
 package publicationtracker.repository
 
-import publicationtracker.model.Achievements.ProfessionalDevelopment
-import java.util.UUID
 import fs2.Stream
+import publicationtracker.model.Achievements.ProfessionalDevelopment
+
+import java.util.UUID
 
 trait ProfessionalDevelopmentRepository[F[_]] {
   def getAll: F[List[ProfessionalDevelopment]]

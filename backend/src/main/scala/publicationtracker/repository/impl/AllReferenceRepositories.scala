@@ -38,3 +38,6 @@ class PublicationTypeRepository[F[_]: MonadCancelThrow](xa: Transactor[F])
 
 class ConferenceDataStatusRepository[F[_]: MonadCancelThrow](xa: Transactor[F])
   extends AbstractReferenceRepository[F]("conference_data_status")(xa)
+
+class ParticipationFormatRepository[F[_]: MonadCancelThrow](xa: Transactor[F])
+  extends AbstractReferenceRepository[F]("participation_format")(xa)
