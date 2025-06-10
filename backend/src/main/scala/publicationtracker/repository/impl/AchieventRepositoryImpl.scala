@@ -1,6 +1,7 @@
 package publicationtracker.repository.impl
 
 import cats.Id
+import cats.data.NonEmptyList
 import cats.effect.Async
 import cats.syntax.all.*
 import doobie.*
@@ -12,7 +13,6 @@ import publicationtracker.model.db.DbAchievent
 import publicationtracker.repository.AchieventRepository
 
 import java.util.UUID
-import cats.data.NonEmptyList
 
 class AchieventRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AchieventRepository[F] {
 

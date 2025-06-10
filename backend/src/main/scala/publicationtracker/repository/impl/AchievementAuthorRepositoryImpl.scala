@@ -1,19 +1,19 @@
 package publicationtracker.repository.impl
 
 import cats.Id
+import cats.data.NonEmptyList
 import cats.effect.Async
 import cats.syntax.all.*
 import doobie.*
 import doobie.implicits.*
 import doobie.postgres.implicits.*
+import doobie.util.fragments
 import fs2.Stream
 import publicationtracker.model.Achievements.{AchievementAuthor, AchievementAuthorF}
 import publicationtracker.model.db.DbAchievementAuthor
 import publicationtracker.repository.AchievementAuthorRepository
 
 import java.util.UUID
-import cats.data.NonEmptyList
-import doobie.util.fragments
 
 class AchievementAuthorRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AchievementAuthorRepository[F] {
 

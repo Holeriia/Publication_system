@@ -1,8 +1,8 @@
 package publicationtracker.model
 
-import io.circe.{Encoder, Decoder}
-import io.circe.generic.semiauto._
 import cats.Id
+import io.circe.generic.semiauto.*
+import io.circe.{Decoder, Encoder}
 
 object ReferenceCodecs {
   // Кодеки для Reference[Id]

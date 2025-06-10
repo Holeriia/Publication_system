@@ -23,7 +23,7 @@ object HttpServer {
     implicit val filesF: Files[F] = Files.forAsync[F]
 
     val dsl = new Http4sDsl[F]{}
-    import dsl._
+    import dsl.*
 
     for {
       // Инициализация репозитория для получения otherTypeId (нужен для OtherAchievementService)

@@ -1,6 +1,7 @@
 package publicationtracker.repository.impl
 
 import cats.Id
+import cats.data.NonEmptyList
 import cats.effect.Async
 import cats.syntax.all.*
 import doobie.*
@@ -13,8 +14,6 @@ import publicationtracker.model.db.{Conversions, DbOther}
 import publicationtracker.repository.OtherRepository
 
 import java.util.UUID
-import cats.data.NonEmptyList
-import cats.syntax.all.*
 
 class OtherRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends OtherRepository[F] {
 

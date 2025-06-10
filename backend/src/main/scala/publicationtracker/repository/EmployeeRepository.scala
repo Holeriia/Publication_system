@@ -2,6 +2,7 @@ package publicationtracker.repository
 
 import fs2.Stream
 import publicationtracker.model.CoreEntities.Employee
+
 import java.util.UUID
 
 trait EmployeeRepository[F[_]] {

@@ -1,5 +1,6 @@
 package publicationtracker.repository.impl
 
+import cats.data.NonEmptyList
 import cats.effect.Async
 import cats.syntax.all.*
 import doobie.*
@@ -10,12 +11,7 @@ import fs2.Stream
 import publicationtracker.model.CoreEntities.Author
 import publicationtracker.model.db.DbAuthor
 import publicationtracker.repository.AuthorRepository
-import cats.data.NonEmptyList
-import cats.effect.Async
-import doobie.*
-import doobie.implicits.*
-import doobie.postgres.implicits.*
-import cats.syntax.all.*
+
 import java.util.UUID
 
 class AuthorRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AuthorRepository[F] {

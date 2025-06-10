@@ -1,11 +1,12 @@
 package publicationtracker.model.view
 
-import publicationtracker.model.ReferenceData.ReferenceF
-import java.util.UUID
 import cats.Id
 import io.circe.Encoder
 import io.circe.generic.semiauto.*
 import publicationtracker.model.ReferenceCodecs.given
+import publicationtracker.model.ReferenceData.ReferenceF
+
+import java.util.UUID
 
 final case class EmployeeFull(
                                id: UUID,

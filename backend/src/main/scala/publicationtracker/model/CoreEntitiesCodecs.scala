@@ -1,9 +1,10 @@
 package publicationtracker.model
 
-import io.circe.{Decoder, Encoder}
-import io.circe.generic.semiauto._
-import publicationtracker.model.CoreEntities.Employee
 import cats.Id
+import io.circe.generic.semiauto.*
+import io.circe.{Decoder, Encoder}
+import publicationtracker.model.CoreEntities.Employee
+
 import java.time.LocalDate
 import java.util.UUID
 import scala.util.Try

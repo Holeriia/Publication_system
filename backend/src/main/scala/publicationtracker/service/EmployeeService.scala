@@ -1,8 +1,8 @@
 package publicationtracker.service
 
-import cats.effect.Async
 import publicationtracker.model.CoreEntities.Employee
 import publicationtracker.model.view.EmployeeFull
+
 import java.util.UUID
 
 trait EmployeeService[F[_]] {
