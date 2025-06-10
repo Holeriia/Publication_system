@@ -3,6 +3,7 @@ package publicationtracker.repository
 import cats.Id
 import fs2.Stream
 import publicationtracker.model.Achievements.AchieventF
+import publicationtracker.model.view.OtherAchievementView
 
 import java.util.UUID
 
@@ -15,4 +16,7 @@ trait AchieventRepository[F[_]] {
   def delete(id: UUID): F[Boolean]
   def streamAll: Stream[F, AchieventF[Id]]
   def getByIds(ids: List[UUID]): F[List[AchieventF[Id]]]
+  
+  def getOtherAchievementsByEmployee(employeeId: UUID, otherTypeId: UUID): F[List[OtherAchievementView]]
+
 }

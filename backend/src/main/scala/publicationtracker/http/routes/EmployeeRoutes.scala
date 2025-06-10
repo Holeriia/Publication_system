@@ -3,26 +3,39 @@ package publicationtracker.http.routes
 import cats.Id
 import cats.effect.Async
 import cats.syntax.all.*
-import io.circe.Encoder
+import io.circe.{Encoder, Json}
 import io.circe.syntax.*
 import org.http4s.*
 import org.http4s.circe.*
 import org.http4s.dsl.Http4sDsl
 import publicationtracker.model.CoreEntities.Employee
 import publicationtracker.model.CoreEntitiesCodecs.*
-import publicationtracker.model.view.{EmployeeFull, EmployeeShortInfo, given}
+import publicationtracker.model.view.{EmployeeFull, EmployeeShortInfo, OtherAchievementView, given}
 import publicationtracker.service.EmployeeService
-
+import io.circe.generic.semiauto.deriveEncoder
+import publicationtracker.model.ReferenceCodecs.given
+import publicationtracker.model.view.EmployeeFullResponse
+import java.util.UUID
 
 class EmployeeRoutes[F[_]: Async](service: EmployeeService[F]) extends Http4sDsl[F] {
-  // Дополнительно: given для List[EmployeeShortInfo]
+  
   given Encoder[List[EmployeeShortInfo]] = Encoder.encodeList(EmployeeShortInfo.given_Encoder_EmployeeShortInfo)
   given EntityEncoder[F, List[EmployeeShortInfo]] = jsonEncoderOf[F, List[EmployeeShortInfo]]
-
-  // Прочие кодеки
+  
   implicit val employeeDecoder: EntityDecoder[F, Employee] = jsonOf[F, Employee]
   implicit val employeeEncoder: EntityEncoder[F, Employee] = jsonEncoderOf[F, Employee]
-  implicit val employeeFullEncoder: EntityEncoder[F, EmployeeFull] = jsonEncoderOf[F, EmployeeFull]
+  implicit val employeeFullEncoder: Encoder[EmployeeFull] = deriveEncoder[EmployeeFull]
+  implicit val otherAchievementViewEncoder: Encoder[OtherAchievementView] = deriveEncoder[OtherAchievementView]
+  implicit val employeeFullResponseEncoder: Encoder[EmployeeFullResponse] = deriveEncoder[EmployeeFullResponse]
+  implicit val employeeFullResponseEntityEncoder: EntityEncoder[F, EmployeeFullResponse] = jsonEncoderOf[F, EmployeeFullResponse]
+
+  implicit val fullWithOthersEncoder: EntityEncoder[F, (EmployeeFull, List[OtherAchievementView])] =
+    jsonEncoderOf[F, Json].contramap { case (empFull, others) =>
+      Json.obj(
+        "employee" -> empFull.asJson,
+        "otherAchievements" -> others.asJson
+      )
+    }
 
   val routes: HttpRoutes[F] = HttpRoutes.of[F] {
 
@@ -69,11 +82,11 @@ class EmployeeRoutes[F[_]: Async](service: EmployeeService[F]) extends Http4sDsl
         case false => NotFound()
       }
 
-    // Расширенная информация (с привязками к достижениям и справочникам)
+    // Расширенная информация с достижениями "другое"
     case GET -> Root / UUIDVar(id) / "full" =>
-      service.getFull(id).flatMap {
-        case Some(full) => Ok(full.asJson)
-        case None       => NotFound()
+      service.getFullWithOtherAchievements(id).flatMap {
+        case Some(value) => Ok(EmployeeFullResponse(value._1, value._2))
+        case None        => NotFound()
       }
   }
 }

@@ -10,9 +10,14 @@ import doobie.postgres.implicits.*
 import fs2.Stream
 import publicationtracker.model.Achievements.AchieventF
 import publicationtracker.model.db.DbAchievent
+import publicationtracker.model.view.OtherAchievementView
 import publicationtracker.repository.AchieventRepository
+import io.circe.parser._ // Для парсинга JSON
+import io.circe.generic.auto._
+import io.circe.syntax._ // Для asJson
 
 import java.util.UUID
+import java.time.LocalDate
 
 class AchieventRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AchieventRepository[F] {
 
@@ -99,12 +104,54 @@ class AchieventRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends AchieventR
           .map(_.map(DbAchievent.toCore))
     }
 
+  // Этот метод не используется напрямую AchieventServiceImpl, его можно удалить или оставить для других целей
   def findByEmployeeAndType(employeeId: UUID, typeId: UUID): F[List[AchieventF[Id]]] = {
-    // SQL-запрос, который возвращает достижения для данного сотрудника и данного типа "другое"
-    // (Реализация зависит от твоей структуры таблиц, примерно что-то типа:)
     sql"""
-      SELECT * FROM achievement
+      SELECT id, type_id, publication_id, other_id, methodical_activity_id,
+             professional_development_id, pattents_and_registration_id,
+             comment, reward_file, date -- Убедись, что все колонки AchieventF[Id] есть здесь
+      FROM achievent
       WHERE employee_id = $employeeId AND type_id = $typeId
     """.query[AchieventF[Id]].to[List].transact(xa)
+  }
+
+  override def getOtherAchievementsByEmployee(employeeId: UUID, otherTypeId: UUID): F[List[OtherAchievementView]] = {
+    sql"""
+      SELECT
+        a.id,
+        o.name,
+        o.description,
+        a.comment,
+        a.date,
+        coalesce(
+          json_agg(
+            DISTINCT (auth_details.last_name || ' ' || auth_details.first_name || ' ' || coalesce(auth_details.patronymic, ''))
+            ORDER BY (auth_details.last_name || ' ' || auth_details.first_name || ' ' || coalesce(auth_details.patronymic, ''))
+          ) FILTER (WHERE auth_details.id IS NOT NULL), -- И здесь auth_details
+          '[]'
+        )::text AS co_authors_json_string
+      FROM achievent a
+      JOIN other o ON a.other_id = o.id
+      -- Эти джойны для ФИЛЬТРАЦИИ: найти достижения, где employeeId является АВТОРОМ
+      JOIN achievement_author aa_filter ON aa_filter.achievent_id = a.id
+      JOIN author au_filter ON au_filter.id = aa_filter.author_id
+      -- Эти джойны для СБОРА ВСЕХ АВТОРОВ для json_agg (даже если они не employeeId)
+      LEFT JOIN achievement_author aa_all ON aa_all.achievent_id = a.id
+      LEFT JOIN author auth_details ON auth_details.id = aa_all.author_id
+      WHERE a.type_id = $otherTypeId
+        AND au_filter.employee_id = $employeeId
+      GROUP BY a.id, o.name, o.description, a.comment, a.date
+      ORDER BY a.date DESC NULLS LAST
+    """
+      .query[(UUID, String, Option[String], Option[String], Option[java.time.LocalDate], String)]
+      .map { case (id, name, desc, comment, date, coAuthorsJson) =>
+        val parsedCoAuthors: List[String] = decode[List[String]](coAuthorsJson).getOrElse {
+          System.err.println(s"Ошибка парсинга coAuthorsJson: $coAuthorsJson для достижения $id")
+          List.empty
+        }
+        OtherAchievementView(id, name, desc, comment, date, parsedCoAuthors)
+      }
+      .to[List]
+      .transact(xa)
   }
 }

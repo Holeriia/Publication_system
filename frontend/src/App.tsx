@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { MainPage } from './features/MainPage/MainPage';
+import { EmployeeListPage } from './features/EmployeeListPage/EmployeeListPage';
 import CityList from './components/CityList';
 import { Layout } from './layout/Layout';
-import { EmployeeDetailsPage } from './features/EmployeeFullPage/EmployeeDetailsPage';
+import { EmployeeFullPage } from './features/EmployeeFullPage/EmployeeFullPage';
 import { EmployeeRedirect } from './features/EmployeeFullPage/EmployeeRedirect';
 
 function App() {
@@ -10,14 +10,14 @@ function App() {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<MainPage />} />
+          <Route path="/" element={<EmployeeListPage />} />
           <Route path="/city" element={<CityList />} />
-          <Route path="/employees" element={<MainPage />} />
+          <Route path="/employees" element={<EmployeeListPage />} />
 
           {/* ⚠️ ВАЖНО: этот должен быть ДО /employees/:id/full */}
           <Route path="/employees/:id" element={<EmployeeRedirect />} />
 
-          <Route path="/employees/:id/full" element={<EmployeeDetailsPage />} />
+          <Route path="/employees/:id/full" element={<EmployeeFullPage />} />
         </Routes>
       </Layout>
     </Router>

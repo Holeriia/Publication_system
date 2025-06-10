@@ -12,21 +12,17 @@ import org.http4s.server.staticcontent.ResourceServiceBuilder
 import org.http4s.{HttpApp, HttpRoutes, StaticFile}
 import publicationtracker.http.routes.{EmployeeRoutes, ReferenceRoutes}
 import publicationtracker.repository.impl.*
-import publicationtracker.service.EmployeeService
-import publicationtracker.service.impl.EmployeeServiceImpl
-
-import java.util.UUID
+import publicationtracker.service.impl.{AchieventServiceImpl, EmployeeServiceImpl}
 
 object HttpServer {
 
   def httpApp[F[_]: Async](transactor: HikariTransactor[F]): F[HttpApp[F]] = {
     implicit val filesF: Files[F] = Files.forAsync[F]
 
-    val dsl = new Http4sDsl[F]{}
+    val dsl = new Http4sDsl[F] {}
     import dsl.*
 
     for {
-      // Инициализация репозитория для получения otherTypeId (нужен для OtherAchievementService)
       achievementTypeRepo <- Sync[F].delay(new AchievementTypeRepository[F](transactor))
       maybeOtherType <- achievementTypeRepo.findByName("другое")
       otherTypeId <- maybeOtherType match {
@@ -34,7 +30,10 @@ object HttpServer {
         case None    => Sync[F].raiseError(new Exception("Тип достижения 'другое' не найден в базе данных!"))
       }
 
-      // 2. Создаем репозитории и сервис для Employees
+      // Правильно создаём реализацию репозитория AchieventRepositoryImpl
+      achieventRepo = new AchieventRepositoryImpl[F](transactor)
+      achieventService = new AchieventServiceImpl[F](achieventRepo, achievementTypeRepo)
+
       cityRepo = new CityRepository[F](transactor)
       cityApiRoutes = new ReferenceRoutes[F]("city", cityRepo).routes
 
@@ -42,11 +41,13 @@ object HttpServer {
       degreeRepo = new AcademicDegreeRepository[F](transactor)
       titleRepo = new AcademicTitleRepository[F](transactor)
       postRepo = new EmployeePostRepository[F](transactor)
-      employeeService = new EmployeeServiceImpl(
+
+      employeeService = new EmployeeServiceImpl[F](
         employeeRepo,
         degreeRepo,
         titleRepo,
-        postRepo
+        postRepo,
+        achieventService
       )
       employeeRoutes = new EmployeeRoutes[F](employeeService).routes
       staticRoutes = ResourceServiceBuilder[F]("/").toRoutes

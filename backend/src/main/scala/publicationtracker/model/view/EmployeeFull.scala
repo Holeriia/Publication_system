@@ -22,4 +22,4 @@ final case class EmployeeFull(
                                diplomaEducation: Option[String]
                              )
 
-given Encoder[EmployeeFull] = deriveEncoder
+given Encoder[EmployeeFull] = deriveEncoder[EmployeeFull]

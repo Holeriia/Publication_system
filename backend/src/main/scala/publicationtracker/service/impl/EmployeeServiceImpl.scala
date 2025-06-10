@@ -5,11 +5,11 @@ import cats.effect.Async
 import cats.syntax.all.*
 import publicationtracker.model.CoreEntities.Employee
 import publicationtracker.model.ReferenceData.ReferenceF
-import publicationtracker.model.view.EmployeeFull
+import publicationtracker.model.view.{EmployeeFull, OtherAchievementView}
 import publicationtracker.repository.EmployeeRepository
 import publicationtracker.repository.impl.{AcademicDegreeRepository, AcademicTitleRepository, EmployeePostRepository}
-import publicationtracker.service.EmployeeService
-
+import publicationtracker.service.{AchieventService, EmployeeService}
+import scala.util.control.NonFatal
 import java.time.format.DateTimeFormatter
 import java.util.UUID
 
@@ -17,7 +17,8 @@ class EmployeeServiceImpl[F[_]: Async](
                                         employeeRepo: EmployeeRepository[F],
                                         degreeRepo: AcademicDegreeRepository[F],
                                         titleRepo: AcademicTitleRepository[F],
-                                        postRepo: EmployeePostRepository[F]
+                                        postRepo: EmployeePostRepository[F],
+                                        achieventService: AchieventService[F]
                                       ) extends EmployeeService[F] {
 
   private val dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy")
@@ -50,7 +51,8 @@ class EmployeeServiceImpl[F[_]: Async](
             EmployeeFull(
               id = emp.id,
               firstName = emp.firstName,
-              lastName = emp.lastName,              patronymic = emp.patronymic,
+              lastName = emp.lastName,
+              patronymic = emp.patronymic,
               degree = degreeOpt,
               title = titleOpt,
               post = postOpt,
@@ -62,4 +64,17 @@ class EmployeeServiceImpl[F[_]: Async](
           }.map(Some(_))
       }
     } yield maybeResponse
+
+  // полная информация + "другие" достижения
+  def getFullWithOtherAchievements(id: UUID): F[Option[(EmployeeFull, List[OtherAchievementView])]] =
+    (for {
+      maybeEmployeeFull <- getFull(id)
+      otherAchievements <- achieventService.getOtherAchievementsByEmployee(id)
+    } yield maybeEmployeeFull.map(ef => (ef, otherAchievements)))
+      .handleErrorWith {
+        case NonFatal(e) =>
+          System.err.println(s"CRITICAL ERROR in getFullWithOtherAchievements for ID $id: ${e.getMessage}")
+          e.printStackTrace(System.err)
+          Async[F].raiseError(e)
+      }
 }
