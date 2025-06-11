@@ -1,0 +1,9 @@
+[debug] > Exec(compile, None, None)
+[debug] Evaluating tasks: Compile / compile
+[debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
+[info] Building frontend...
+[info] Installing frontend dependencies...
+[info] compiling 69 Scala sources to D:\Code_projects\Publication_system\backend\target\scala-3.3.6\classes ...
+[info] done compiling
+[success] Total time: 92 s (01:32), completed 11 июн. 2025 г., 17:43:36
+[debug] > Exec(idea-shell, None, None)

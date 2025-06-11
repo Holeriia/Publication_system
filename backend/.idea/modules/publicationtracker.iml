@@ -34,9 +34,9 @@
     <orderEntry type="library" name="sbt: org.typelevel:log4cats-slf4j_3:2.7.1:jar" level="project" />
     <orderEntry type="library" name="sbt: ch.qos.logback:logback-classic:1.5.18:jar" level="project" />
     <orderEntry type="library" name="sbt: org.apache.poi:poi-ooxml:5.4.1:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.flywaydb:flyway-core:11.9.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.flywaydb:flyway-database-postgresql:11.9.0:jar" level="project" />
-    <orderEntry type="library" name="sbt: org.postgresql:postgresql:42.7.6:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.flywaydb:flyway-core:11.9.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.flywaydb:flyway-database-postgresql:11.9.1:jar" level="project" />
+    <orderEntry type="library" name="sbt: org.postgresql:postgresql:42.7.7:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scala-lang:scala-library:2.13.16:jar" level="project" />
     <orderEntry type="library" name="sbt: org.scodec:scodec-bits_3:1.1.38:jar" level="project" />
     <orderEntry type="library" name="sbt: org.typelevel:cats-kernel_3:2.13.0:jar" level="project" />

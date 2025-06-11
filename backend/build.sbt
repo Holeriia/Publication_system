@@ -1,10 +1,6 @@
 import scala.sys.process.Process
 
 ThisBuild / scalaVersion := "3.3.6"
-
-lazy val frontendInstall = taskKey[Unit]("Install frontend dependencies")
-lazy val frontendBuild = taskKey[Unit]("Build frontend")
-
 lazy val root = (project in file("."))
   .settings(
     version := "0.1.0-SNAPSHOT",
@@ -47,34 +43,8 @@ lazy val root = (project in file("."))
       "org.apache.poi" % "poi-ooxml" % "5.4.1",
 
       // Flyway + PostgreSQL
-      "org.flywaydb" % "flyway-core" % "11.9.0",
-      "org.flywaydb" % "flyway-database-postgresql" % "11.9.0",
-      "org.postgresql" % "postgresql" % "42.7.6",
-    ),
-
-    // ========== Настройки для фронтенда ==========
-    frontendInstall := {
-      val log = streams.value.log
-      log.info("Installing frontend dependencies...")
-      val npm = "D:\\Programs\\notejs\\npm.cmd"
-      val exitCode = Process(npm :: "install" :: Nil, file("../frontend")).!
-      if (exitCode != 0) throw new Exception("Frontend install failed")
-    },
-
-    frontendBuild := {
-      val log = streams.value.log
-      log.info("Building frontend...")
-      val npm = "D:\\Programs\\notejs\\npm.cmd"
-      val exitCode = Process(npm :: "run" :: "build" :: Nil, file("../frontend")).!
-      if (exitCode != 0) throw new Exception("Frontend build failed")
-    },
-
-    Compile / resourceGenerators += Def.task {
-      val from = file("../frontend/dist")
-      val to = (Compile / resourceManaged).value / "public"
-      IO.copyDirectory(from, to)
-      (to ** "*").get
-    }.taskValue,
-
-    Compile / compile := ((Compile / compile).dependsOn(frontendInstall, frontendBuild)).value
+      "org.flywaydb" % "flyway-core" % "11.9.1",
+      "org.flywaydb" % "flyway-database-postgresql" % "11.9.1",
+      "org.postgresql" % "postgresql" % "42.7.7",
+    )
   )

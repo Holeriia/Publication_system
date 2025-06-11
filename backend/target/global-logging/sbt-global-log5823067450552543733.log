@@ -11,11 +11,11 @@
 [debug] > Exec(onFailure loadFailed, None, None)
 [debug] > Exec(loadp, None, None)
 [info] welcome to sbt 1.10.3 (Oracle Corporation Java 21.0.1)
-[debug] Load.defaultLoad until apply took 96.7482ms
-[debug]           Load.loadUnit: plugins took 109.1776ms
-[debug]           Load.loadUnit: defsScala took 0.3583ms
+[debug] Load.defaultLoad until apply took 123.8019ms
+[debug]           Load.loadUnit: plugins took 118.094999ms
+[debug]           Load.loadUnit: defsScala took 0.469ms
 [debug] [Loading] Scanning directory D:\Code_projects\Publication_system\backend\project
-[debug]             Load.loadUnit: mkEval took 7.5795ms
+[debug]             Load.loadUnit: mkEval took 8.343899ms
 [debug] [Loading] Found non-root projects 
 [debug] [Loading] Done in D:\Code_projects\Publication_system\backend\project, returning: ()
 [debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
@@ -31,27 +31,27 @@
 [debug] Clause(Atom(sbt.plugins.CorePlugin),Set(Atom(sbt.plugins.Giter8TemplatePlugin)))
 [debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.MiniDependencyTreePlugin))))
 [debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.MiniDependencyTreePlugin,sbt.plugins.JUnitXmlReportPlugin,sbt.plugins.SemanticdbPlugin)
-[debug] Plugins.deducer#function took 16.2459 ms
+[debug] Plugins.deducer#function took 15.9743 ms
 [info] loading settings for project backend-build from idea.sbt ...
-[debug]               Load.resolveProject(backend-build) took 44.4558ms
-[debug]             Load.loadTransitive: finalizeProject(Project(id backend-build, base: D:\Code_projects\Publication_system\backend\project, plugins: List(<none>))) took 80.2929ms
+[debug]               Load.resolveProject(backend-build) took 54.8996ms
+[debug]             Load.loadTransitive: finalizeProject(Project(id backend-build, base: D:\Code_projects\Publication_system\backend\project, plugins: List(<none>))) took 92.288ms
 [debug] [Loading] Done in D:\Code_projects\Publication_system\backend\project, returning: (backend-build)
-[debug]           Load.loadUnit: loadedProjectsRaw took 537.1818ms
-[debug]           Load.loadUnit: cleanEvalClasses took 11.7735ms
-[debug]         Load.loadUnit(file:/D:/Code_projects/Publication_system/backend/project/, ...) took 665.8973ms
-[debug]       Load.apply: load took 804.8983ms
-[debug]       Load.apply: resolveProjects took 4.956ms
-[debug]       Load.apply: finalTransforms took 70.888ms
-[debug]       Load.apply: config.delegates took 7.7442ms
-[debug]       Load.apply: Def.make(settings)... took 468.6967ms
-[debug]       Load.apply: structureIndex took 122.4602ms
-[debug]       Load.apply: mkStreams took 1.5214ms
+[debug]           Load.loadUnit: loadedProjectsRaw took 406.890899ms
+[debug]           Load.loadUnit: cleanEvalClasses took 13.854301ms
+[debug]         Load.loadUnit(file:/D:/Code_projects/Publication_system/backend/project/, ...) took 548.2675ms
+[debug]       Load.apply: load took 685.752001ms
+[debug]       Load.apply: resolveProjects took 5.1632ms
+[debug]       Load.apply: finalTransforms took 67.1807ms
+[debug]       Load.apply: config.delegates took 9.337901ms
+[debug]       Load.apply: Def.make(settings)... took 457.7746ms
+[debug]       Load.apply: structureIndex took 113.8292ms
+[debug]       Load.apply: mkStreams took 1.4036ms
 [info] loading project definition from D:\Code_projects\Publication_system\backend\project
 [debug] Running task... Cancel: Signal, check cycles: false, forcegc: true
-[debug]     Load.loadUnit: plugins took 3223.3387ms
-[debug]     Load.loadUnit: defsScala took 0.0033ms
+[debug]     Load.loadUnit: plugins took 3012.6264ms
+[debug]     Load.loadUnit: defsScala took 0.0048ms
 [debug] [Loading] Scanning directory D:\Code_projects\Publication_system\backend
-[debug]       Load.loadUnit: mkEval took 0.3772ms
+[debug]       Load.loadUnit: mkEval took 0.607501ms
 [debug] [Loading] Found root project root w/ remaining 
 [debug] deducing auto plugins based on known facts Set(Atom(sbt.plugins.CorePlugin)) and clauses Clauses(Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(sbt.plugins.IvyPlugin)))
 [debug] Clause(Atom(sbt.ScriptedPlugin),Set(Atom(sbt.plugins.JvmPlugin)))
@@ -70,21 +70,21 @@
 [debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(org.jetbrains.sbt.StructurePlugin)))
 [debug] Clause(Atom(sbt.plugins.JvmPlugin),Set(Atom(org.jetbrains.sbt.IdeaShellPlugin))))
 [debug]   :: deduced result: Matched(sbt.plugins.CorePlugin,sbt.plugins.Giter8TemplatePlugin,sbt.plugins.IvyPlugin,sbt.plugins.JvmPlugin,sbt.plugins.SemanticdbPlugin,sbt.plugins.JUnitXmlReportPlugin,org.jetbrains.sbt.IdeaShellPlugin,org.jetbrains.sbt.StructurePlugin,sbt.plugins.MiniDependencyTreePlugin)
-[debug] Plugins.deducer#function took 15.8121 ms
+[debug] Plugins.deducer#function took 2.697299 ms
 [info] loading settings for project root from build.sbt ...
-[debug]         Load.resolveProject(root) took 120.152ms
-[debug]       Load.loadTransitive: finalizeProject(Project(id root, base: D:\Code_projects\Publication_system\backend, plugins: List(<none>))) took 138.6251ms
+[debug]         Load.resolveProject(root) took 28.5855ms
+[debug]       Load.loadTransitive: finalizeProject(Project(id root, base: D:\Code_projects\Publication_system\backend, plugins: List(<none>))) took 32.6097ms
 [debug] [Loading] Done in D:\Code_projects\Publication_system\backend, returning: (root)
-[debug]     Load.loadUnit: loadedProjectsRaw took 6613.0661ms
-[debug]     Load.loadUnit: cleanEvalClasses took 57.6155ms
-[debug]   Load.loadUnit(file:/D:/Code_projects/Publication_system/backend/, ...) took 9896.1239ms
-[debug] Load.apply: load took 9919.8482ms
-[debug] Load.apply: resolveProjects took 0.2168ms
-[debug] Load.apply: finalTransforms took 85.2519ms
-[debug] Load.apply: config.delegates took 0.7863ms
-[debug] Load.apply: Def.make(settings)... took 339.3664ms
-[debug] Load.apply: structureIndex took 204.6508ms
-[debug] Load.apply: mkStreams took 0.0028ms
+[debug]     Load.loadUnit: loadedProjectsRaw took 5151.144399ms
+[debug]     Load.loadUnit: cleanEvalClasses took 29.39ms
+[debug]   Load.loadUnit(file:/D:/Code_projects/Publication_system/backend/, ...) took 8195.9083ms
+[debug] Load.apply: load took 8222.7524ms
+[debug] Load.apply: resolveProjects took 0.3802ms
+[debug] Load.apply: finalTransforms took 50.2661ms
+[debug] Load.apply: config.delegates took 0.4863ms
+[debug] Load.apply: Def.make(settings)... took 133.4878ms
+[debug] Load.apply: structureIndex took 50.8821ms
+[debug] Load.apply: mkStreams took 0.0043ms
 [info] set current project to publicationtracker (in build file:/D:/Code_projects/Publication_system/backend/)
 [debug] > Exec(sbtPopOnFailure, None, None)
 [debug] > Exec(resumeFromFailure, None, None)

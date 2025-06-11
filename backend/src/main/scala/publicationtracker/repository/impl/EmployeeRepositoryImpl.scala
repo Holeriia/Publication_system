@@ -14,7 +14,6 @@ import publicationtracker.repository.EmployeeRepository
 import java.util.UUID
 
 class EmployeeRepositoryImpl[F[_]: Async](xa: Transactor[F]) extends EmployeeRepository[F] {
-
   private val tableName = "employee"
 
   private val fields =

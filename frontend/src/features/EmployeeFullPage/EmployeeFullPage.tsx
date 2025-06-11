@@ -42,7 +42,7 @@ export const EmployeeFullPage: React.FC = () => {
   return (
     <div style={{ padding: '1rem' }}>
       <button onClick={() => navigate(-1)} style={{ marginBottom: '1rem' }}>
-        ← Назад
+        ← К списку сотрудников
       </button>
 
       <EmployeeDetails employee={employee} />
